@@ -93,7 +93,6 @@
         return;
       }
 
-      let score = 0;
       let content = `**Quiz Submission**\n**Name**: ${name}\n`;
 
       for (let i = 1; i <= 7; i++) {
@@ -111,8 +110,6 @@
         }
 
         const isCorrect = selected.value === correctAnswers[q];
-        if (isCorrect) score++;
-
         const feedback = document.createElement('span');
         feedback.className = `feedback ${isCorrect ? 'correct' : 'wrong'}`;
         feedback.innerHTML = isCorrect ? '✔️' : '❌';
@@ -127,7 +124,18 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ content })
       }).then(() => {
-        console.log("Sent to Discord.");
+        alert("Thanks for submitting!");
+
+        // Reset form fields
+        document.getElementById('quizForm').reset();
+        document.getElementById('username').value = '';
+
+        // Remove all ✔️ and ❌ after reset
+        for (let i = 1; i <= 7; i++) {
+          const block = document.getElementById(`q${i}block`);
+          const feedback = block.querySelector('.feedback');
+          if (feedback) feedback.remove();
+        }
       }).catch(err => {
         console.error("Error sending to Discord:", err);
         alert("There was an error sending your answers.");
