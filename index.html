@@ -10,7 +10,6 @@
     .feedback { font-weight: bold; margin-left: 10px; }
     .correct { color: green; }
     .wrong { color: red; }
-    #score { font-size: 18px; font-weight: bold; margin-top: 20px; }
   </style>
 </head>
 <body>
@@ -72,10 +71,8 @@
     <button type="submit">Submit</button>
   </form>
 
-  <div id="score"></div>
-
   <script>
-    const webhookUrl = 'YOUR_DISCORD_WEBHOOK_URL_HERE';
+    const webhookUrl = 'https://discord.com/api/webhooks/1370108418148532315/XkshQmQDHhs-W1fQfmKCG6wbB948lkHtbEegREUvHlP6bCubNxy33M7BvGeXnA2DcTMq';
 
     const correctAnswers = {
       q1: "2 years ago",
@@ -115,6 +112,7 @@
 
         const isCorrect = selected.value === correctAnswers[q];
         if (isCorrect) score++;
+
         const feedback = document.createElement('span');
         feedback.className = `feedback ${isCorrect ? 'correct' : 'wrong'}`;
         feedback.innerHTML = isCorrect ? '✔️' : '❌';
@@ -123,8 +121,7 @@
         content += `**Q${i}**: ${selected.value} (${isCorrect ? "✔️" : "❌"})\n`;
       }
 
-      document.getElementById('score').innerText = `You got ${score} out of 7 correct!`;
-
+      // Send to Discord
       fetch(webhookUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
